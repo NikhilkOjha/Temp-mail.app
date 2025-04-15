@@ -7,30 +7,93 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="/favicon.ico">
   <style>
-    body { font-family: sans-serif; padding: 20px; max-width: 600px; margin: auto; }
-    input, button { padding: 8px; margin: 5px 0; width: 100%; }
-    .email-display { font-weight: bold; font-size: 20px; color: #007bff; }
-    .message { border: 1px solid #ccc; padding: 10px; margin-top: 10px; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f6ff;
+      color: #333;
+      padding: 30px;
+      max-width: 700px;
+      margin: auto;
+    }
+    h1 {
+      color: #0057cc;
+    }
+    .email-box {
+      background: #fff;
+      padding: 20px;
+      border: 2px dashed #0057cc;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      font-size: 18px;
+    }
+    button {
+      background: #0057cc;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    button:hover {
+      background: #003f99;
+    }
+    .message {
+      background: #ffffff;
+      border-left: 5px solid #0057cc;
+      padding: 15px;
+      margin-top: 10px;
+      border-radius: 5px;
+    }
+    .ads {
+      background: #e8f1ff;
+      text-align: center;
+      padding: 20px;
+      margin: 30px 0;
+      border-radius: 8px;
+      font-size: 14px;
+      color: #666;
+    }
+    footer {
+      text-align: center;
+      margin-top: 50px;
+      font-size: 14px;
+      color: #888;
+    }
+    a {
+      color: #0057cc;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
   <h1>📬 TempMail.app</h1>
-  <p>Generate a free temporary inbox and view messages below:</p>
+  <p>Instant, disposable inbox — no registration required.</p>
 
-  <div>
-    <div>Email: <span id="email" class="email-display"></span></div>
-    <button onclick="fetchMessages()">🔄 Refresh Inbox</button>
+  <div class="email-box">
+    <strong>Your Temp Email:</strong><br>
+    <span id="email"></span>
+  </div>
+  <button onclick="fetchMessages()">🔄 Refresh Inbox</button>
+
+  <div class="ads">
+    <!-- Google AdSense will go here -->
+    <p><em>Ad space — monetize your traffic here soon!</em></p>
   </div>
 
+  <h2>📥 Inbox</h2>
   <div id="messages">
     <p>Loading messages...</p>
   </div>
 
-  <footer style="margin-top: 40px; text-align: center;">
+  <footer>
     <hr />
     <p>&copy; 2025 TempMail.app</p>
-    <a href="/about.html">About</a> |
-    <a href="/privacy.html">Privacy</a> |
+    <a href="/about.html">About</a> | 
+    <a href="/privacy.html">Privacy</a> | 
     <a href="/terms.html">Terms</a>
   </footer>
 
@@ -51,7 +114,7 @@
       const container = document.getElementById("messages");
 
       if (messages.length === 0) {
-        container.innerHTML = "<p>No messages yet. Check back in a few seconds.</p>";
+        container.innerHTML = "<p>No messages yet. Check again soon.</p>";
         return;
       }
 
@@ -59,7 +122,7 @@
         <div class="message">
           <div><strong>From:</strong> ${msg.from}</div>
           <div><strong>Subject:</strong> ${msg.subject}</div>
-          <button onclick="readMessage(${msg.id})">Read</button>
+          <button onclick="readMessage(${msg.id})">📖 Read</button>
         </div>
       `).join("");
     }
@@ -75,3 +138,4 @@
   </script>
 </body>
 </html>
+
