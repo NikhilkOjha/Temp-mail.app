@@ -3,21 +3,75 @@
 <head>
   <meta charset="UTF-8">
   <title>TempMail.app - Free Disposable Email</title>
-  <meta name="description" content="TempMail.app gives you disposable inboxes instantly. Protect your email. No signup.">
+  <meta name="description" content="Free temporary email inbox powered by 1secmail API. No signup, no spam.">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/favicon.ico">
+  <style>
+    body { font-family: sans-serif; padding: 20px; max-width: 600px; margin: auto; }
+    input, button { padding: 8px; margin: 5px 0; width: 100%; }
+    .email-display { font-weight: bold; font-size: 20px; color: #007bff; }
+    .message { border: 1px solid #ccc; padding: 10px; margin-top: 10px; }
+  </style>
 </head>
 <body>
-  <h1>Welcome to TempMail.app 🚀</h1>
-  <p>Use a disposable inbox for free. No signup, no spam, just peace ✉️.</p>
+  <h1>📬 TempMail.app</h1>
+  <p>Generate a free temporary inbox and view messages below:</p>
 
-  <hr />
-  <footer style="text-align: center; font-size: 14px; margin-top: 20px;">
-    <p>&copy; 2025 TempMail.app — Free Disposable Email</p>
-    <nav>
-      <a href="/about.html">About</a> |
-      <a href="/privacy.html">Privacy</a> |
-      <a href="/terms.html">Terms</a>
-    </nav>
+  <div>
+    <div>Email: <span id="email" class="email-display"></span></div>
+    <button onclick="fetchMessages()">🔄 Refresh Inbox</button>
+  </div>
+
+  <div id="messages">
+    <p>Loading messages...</p>
+  </div>
+
+  <footer style="margin-top: 40px; text-align: center;">
+    <hr />
+    <p>&copy; 2025 TempMail.app</p>
+    <a href="/about.html">About</a> |
+    <a href="/privacy.html">Privacy</a> |
+    <a href="/terms.html">Terms</a>
   </footer>
+
+  <script>
+    let username = generateUsername();
+    const domain = "1secmail.com";
+    const email = `${username}@${domain}`;
+    document.getElementById("email").textContent = email;
+
+    function generateUsername() {
+      return "user" + Math.floor(Math.random() * 100000);
+    }
+
+    async function fetchMessages() {
+      const url = `https://www.1secmail.com/api/v1/?action=getMessages&login=${username}&domain=${domain}`;
+      const res = await fetch(url);
+      const messages = await res.json();
+      const container = document.getElementById("messages");
+
+      if (messages.length === 0) {
+        container.innerHTML = "<p>No messages yet. Check back in a few seconds.</p>";
+        return;
+      }
+
+      container.innerHTML = messages.map(msg => `
+        <div class="message">
+          <div><strong>From:</strong> ${msg.from}</div>
+          <div><strong>Subject:</strong> ${msg.subject}</div>
+          <button onclick="readMessage(${msg.id})">Read</button>
+        </div>
+      `).join("");
+    }
+
+    async function readMessage(id) {
+      const url = `https://www.1secmail.com/api/v1/?action=readMessage&login=${username}&domain=${domain}&id=${id}`;
+      const res = await fetch(url);
+      const msg = await res.json();
+      alert(`📧 Subject: ${msg.subject}\n\n${msg.textBody || msg.htmlBody || "(No content)"}`);
+    }
+
+    fetchMessages();
+  </script>
 </body>
 </html>
